@@ -7,38 +7,44 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author Admin
- * @date 2022/6/15
+ * @date 2022/6/15WebSecurityConfig
  */
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
     @Bean
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
-    @Override
     @Bean
+    @Override
     protected UserDetailsService userDetailsService() {
+
         return super.userDetailsService();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("you").password("$2a$10$3exePEMS2hwNVXzg3NRPVurMaA/ksEu5UGe6.cSctS3J7l6RsIarS").roles("admin")
+                .withUser("admin")
+                .password(new BCryptPasswordEncoder().encode("123456")) //123
+                .roles("admin")
                 .and()
-                .withUser("fanqie").password("$2a$10$3exePEMS2hwNVXzg3NRPVurMaA/ksEu5UGe6.cSctS3J7l6RsIarS").roles("user");
+                .withUser("sang")
+                .password(new BCryptPasswordEncoder().encode("123456")) //123
+                .roles("user");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/oauth/**")
-                .authorizeRequests().antMatchers("/oauth/**").permitAll()
+        http.antMatcher("/oauth/**").authorizeRequests()
+                .antMatchers("/oauth/**").permitAll()
                 .and().csrf().disable();
     }
 }
