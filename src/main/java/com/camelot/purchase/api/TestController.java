@@ -6,6 +6,7 @@ import com.camelot.purchase.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +30,8 @@ public class TestController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @GetMapping("aaa")
     public String test() {
@@ -44,6 +47,14 @@ public class TestController {
     @GetMapping("env")
     public String testEnv() {
         return envFlg;
+
+    }
+
+    @GetMapping("redis")
+    public String redis() {
+        String redisKey = "testkey";
+        redisTemplate.opsForValue().set(redisKey,"123456");
+        return (String)redisTemplate.opsForValue().get(redisKey);
 
     }
 
