@@ -1,11 +1,9 @@
 package com.camelot.purchase.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -13,6 +11,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+
+import javax.annotation.Resource;
 
 /**
  * @author Admin
@@ -35,11 +35,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     UserDetailsService userDetailsService;
 
     // 指定密码的加密方式
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        // 使用BCrypt强哈希函数加密方案（密钥迭代次数默认为10）
-        return new BCryptPasswordEncoder();
-    }
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
 
     // 配置 password 授权模式
     @Override
@@ -51,7 +49,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(1800) // 配置access_token的过期时间
                 .resourceIds("rid") //配置资源id
                 .scopes("all")
-                .secret(passwordEncoder().encode("123456")); //123加密后的密码
+                .secret(passwordEncoder.encode("123456")); //123加密后的密码
     }
 
     @Override
