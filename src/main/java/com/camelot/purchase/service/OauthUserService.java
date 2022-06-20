@@ -34,7 +34,7 @@ public class OauthUserService implements UserDetailsService {
         //TODO find in db
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode("1234567");
-        List<GrantedAuthority> authorityList = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+        List<GrantedAuthority> authorityList = AuthorityUtils.commaSeparatedStringToAuthorityList("user");
         QueryWrapper<UserDomain> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name",username);
         UserDomain userDomain = userMapper.selectOne(queryWrapper);

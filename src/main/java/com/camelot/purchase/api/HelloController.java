@@ -20,6 +20,10 @@ public class HelloController {
     public String user() {
         return "hello user";
     }
+    @GetMapping("/user/index")
+    public String index() {
+        return "hello index";
+    }
 
     @GetMapping("/hello")
     public String hello() {
