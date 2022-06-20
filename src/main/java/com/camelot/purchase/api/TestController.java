@@ -65,6 +65,6 @@ public class TestController {
     }
 
     public static void main(String[] args) {
-        System.out.println(new BCryptPasswordEncoder().encode("N123456"));
+        System.out.println(1 << 8);
     }
 }
