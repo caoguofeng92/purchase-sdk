@@ -1,5 +1,7 @@
 package com.camelot.purchase.api;
 
+import com.camelot.purchase.vo.UserVO;
+import org.openjdk.jol.info.ClassLayout;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +33,10 @@ public class HelloController {
     }
 
     public static void main(String[] args) {
-        System.out.println(new BCryptPasswordEncoder().encode("123"));
+//        System.out.println(new BCryptPasswordEncoder().encode("123"));
+        UserVO userVO = new UserVO();
+        userVO.setId(8L);
+        System.out.println(ClassLayout.parseInstance(userVO).toPrintable());
     }
 }
 
