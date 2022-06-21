@@ -1,6 +1,7 @@
 package com.camelot.purchase.service;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.camelot.purchase.convert.UserConvert;
 import com.camelot.purchase.dao.UserMapper;
 import com.camelot.purchase.domain.UserDomain;
@@ -27,5 +28,13 @@ public class UserService {
         List<UserVO> userVOList = UserConvert.INSTANCT.domainListToVoList(domainList);
         log.info("查询userList={}", JSON.toJSONString(userVOList));
         return userVOList;
+    }
+
+    public UserVO findByUserName(String userName) {
+        QueryWrapper<UserDomain> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_name",userName);
+        UserDomain userDomain = userMapper.selectOne(queryWrapper);
+        UserVO userVO = UserConvert.INSTANCT.domainToVo(userDomain);
+        return userVO;
     }
 }

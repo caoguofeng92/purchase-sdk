@@ -3,6 +3,7 @@ package com.camelot.purchase.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.camelot.purchase.dao.UserMapper;
 import com.camelot.purchase.domain.UserDomain;
+import com.camelot.purchase.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +27,7 @@ import java.util.List;
 public class OauthUserService implements UserDetailsService {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
 
     @Override
@@ -35,13 +36,11 @@ public class OauthUserService implements UserDetailsService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode("1234567");
         List<GrantedAuthority> authorityList = AuthorityUtils.commaSeparatedStringToAuthorityList("user");
-        QueryWrapper<UserDomain> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name",username);
-        UserDomain userDomain = userMapper.selectOne(queryWrapper);
-        if(userDomain == null){
+        UserVO byUserName = userService.findByUserName(username);
+        if(byUserName == null){
             throw new UsernameNotFoundException(String.format("用户%s查询不存在",username));
         }
-        User user = new User(userDomain.getUserName(),userDomain.getPassword(),authorityList);
+        User user = new User(byUserName.getUserName(),byUserName.getPassword(),authorityList);
         return user;
     }
 }

@@ -13,4 +13,5 @@ public class UserVO {
     private String userNumber;
     private String userName;
     private Integer delFlg;
+    private String password;
 }
