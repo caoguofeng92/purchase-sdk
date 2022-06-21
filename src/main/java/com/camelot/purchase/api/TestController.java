@@ -50,6 +50,12 @@ public class TestController {
         return envFlg;
 
     }
+    @GetMapping("exception")
+    public String testException() {
+        System.out.println(1/0);
+        return envFlg;
+
+    }
 
     @GetMapping("redis")
     public String redis() {
