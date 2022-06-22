@@ -6,8 +6,10 @@ import com.camelot.purchase.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,8 @@ public class TestController {
     private UserService userService;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @GetMapping("aaa")
     public String test() {
@@ -54,6 +58,12 @@ public class TestController {
     public String testException() {
         System.out.println(1/0);
         return envFlg;
+
+    }
+    @GetMapping("context")
+    public String testContext() {
+        RedisTemplate redisTemplate = applicationContext.getBean("redisTemplate",RedisTemplate.class);
+        return ObjectUtils.identityToString(redisTemplate);
 
     }
 
